@@ -1,0 +1,15 @@
+Communication between processes is as described in here.
+Pascal is executed with the number of line of Pascal triangle which we are to 
+calculate. Next we fork and execute w with two arguments: the number of line we
+are to calculate and it's number. Before execution we are redirecting standard
+I/O so that W(1) will read and write to Pascal and W(i) will read and write to 
+W(i-1). We are also closing the descriptors used to write and read from child -
+Pascal -> W(1) and W(i) -> W(i+1). Next in Pascal we are initiang calculation.
+In n steps we are sending the number of the step and previous value calculated
+by W(i-1). For W(1) it is irrelevant and W(n) because it will always be 1.
+When all the calculation ends, processes freeze on read from child until last
+W(n) sends to W(n-1) it's calculated factor. Next W(i) reads all the factors 
+calculated from W(i+1), W(i+2), ... , W(n) and write them all plus it's factor
+to W(i-1). We are doing it alternately so that no process can write twice before
+other process reads from it. In Pascal we are reading all n factors from
+W(1) and then write them out on standard output.
